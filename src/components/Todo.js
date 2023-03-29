@@ -32,6 +32,7 @@ class Todo extends Component {
         let notFound = this.chechIfPresent(todo)
         if(!notFound){
             this.props.addTodo(todo);
+            this.props.updateTodo(); /* Doubt */
         }
     }
     componentDidMount = () => {
@@ -39,10 +40,10 @@ class Todo extends Component {
     }
     componentDidUpdate = (prevProps,prevState) => {
         if(prevProps.todos !== this.props.todos){
+            console.log('Inside CDU')
             this.props.updateTodo();
         }
     }
-    
     render() {
         return (
             <div className='todo-container'>
