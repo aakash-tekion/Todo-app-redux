@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import TodoForm from './TodoForm.js';
 import TodoList from './TodoList.js';
 import { connect } from 'react-redux';
-import '../Styles/Todo.css'
+import '../../Styles/Todo.css'
+import { Redirect } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar.js';
 class Todo extends Component {
     constructor(props) {
         super(props)
         this.inputRef = React.createRef();
-        console.log(this.prop)
     }
-    
     chechIfPresent(todo){
         let bool = false;
         this.props.todos.forEach(item=>{
@@ -21,7 +21,6 @@ class Todo extends Component {
     }
     completedHandler = (key) => {
         this.props.removeTodo(key);
-        this.props.updateTodo(); /* Doubt */
     }
     addTodo = (event) => {
         event.preventDefault();
@@ -32,21 +31,20 @@ class Todo extends Component {
         let notFound = this.chechIfPresent(todo)
         if(!notFound){
             this.props.addTodo(todo);
-            this.props.updateTodo(); /* Doubt */
         }
     }
     componentDidMount = () => {
-        this.inputRef.current.focus();
-    }
-    componentDidUpdate = (prevProps,prevState) => {
-        if(prevProps.todos !== this.props.todos){
-            console.log('Inside CDU')
-            this.props.updateTodo();
+        if(this.props.isAuthenticated){
+            this.inputRef.current.focus();
         }
     }
     render() {
+        if(!this.props.isAuthenticated){
+            return <Redirect to='/login'/>
+        }
         return (
             <div className='todo-container'>
+                <Navbar/>
                 <TodoForm inputRef = {this.inputRef} addTodo={this.addTodo} />
                 <TodoList completedHandler = {this.completedHandler} todos = {this.props.todos} />
             </div>
@@ -56,14 +54,15 @@ class Todo extends Component {
 }
 const mapStateToProps = state => {
     return {
-        todos:state.todos
+        todos:state.todos,
+        isAuthenticated:state.isAuthenticated
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         addTodo : (todo) => dispatch({type:'add-todo',item:todo}),
         removeTodo : (key) => dispatch({type:'remove-todo',key}),
-        updateTodo : () => dispatch({type:'update-todo'})
     }
 }
+
 export default connect(mapStateToProps,mapDispatchToProps)(Todo);

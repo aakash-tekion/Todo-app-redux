@@ -6,6 +6,7 @@
     padding: 0.5rem 0.5rem;
     background-color:#fff;
     border-radius:1rem;
+    
 }
 .flex-row{
     display: flex;
@@ -26,10 +27,10 @@
 .todo-form{
     width:60%;
     flex-direction: row;
-    height:2rem;
+    height:2.5rem;
     gap:10px;
     margin-top:25px;
-    padding:1rem;
+    
 
 }
 .completed{
@@ -44,15 +45,13 @@
 .todo-form i{
     font-size: 1.5rem;
 }
-
 .todo-form button{
-    height: 2.2rem;
+    height: 2.8rem;
     width: 10%;
     text-align: center;
     color:#fff;
-    background-color: #bbb;
+    background-color: brown;
     border:1px solid #fff;
-    box-shadow: 1px 0 1px 1px;
     cursor: pointer;
 }
 
@@ -64,8 +63,11 @@
 }
 .todo-container{
     width:100%;
-    
-    justify-content: center;
+    /* justify-content: center; */
     gap:25px;
+    height:100vh;
     
+}
+.todo-item{
+    justify-content: flex-start;
 }
