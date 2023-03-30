@@ -23,6 +23,7 @@
 }
 .checkbox{
     margin-right:10px;
+    width:5%;
 }
 .todo-form{
     width:60%;
@@ -54,7 +55,9 @@
     border:1px solid #fff;
     cursor: pointer;
 }
-
+.todo-content{
+    width:90%;
+}
 .todo-list{
     width:60%;
     gap: 10px;
@@ -70,4 +73,10 @@
 }
 .todo-item{
     justify-content: flex-start;
+}
+.delete-icon{
+    font-size:1.5rem;
+    width:5%;
+    color:#bbb;
+    cursor:pointer;
 }

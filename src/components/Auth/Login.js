@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import '../../Styles/Auth.css'
 class Login extends Component {
     constructor(props){
         super(props)
-        this.submitHandler = this.submitHandler.bind(this)
+        this.state = {
+            errorDisplay:false
+        }
+        this.submitHandler = this.submitHandler.bind(this);
+        this.updateErrorMessage = this.updateErrorMessage.bind(this); 
     }
     submitHandler(event){
         event.preventDefault();
@@ -13,7 +17,15 @@ class Login extends Component {
             'username':event.target.username.value,
             'password':event.target.password.value
         }
-        this.props.login(userObj)
+        this.props.login(userObj);
+        this.setState({
+            errorDisplay:true
+        })
+    }
+    updateErrorMessage(){
+        this.setState({
+            errorDisplay:false
+        })
     }
     
     render() {
@@ -25,7 +37,8 @@ class Login extends Component {
                 <label className='form-label' htmlFor='name'>Username</label>
                 <input type='text' name='username' id='name' className='form-input'/>
                 <label className='form-label' htmlFor='password'>Password</label>
-                <input type='password' id='password' name='password' className='form-input'/>
+                <input type='password' id='password' name='password' onClick={this.updateErrorMessage} className='form-input'/>
+                <p className='error-message'>{this.state.errorDisplay?this.props.errorMessage:<Link className='signup-link' to='/signup'>Create new account</Link>}</p>
                 <button className='form-submit-button'>Log in</button>
             </form>
         )
@@ -33,7 +46,8 @@ class Login extends Component {
 }
 const mapStateToProps = state => {
     return{
-        isAuthenticated:state.isAuthenticated
+        isAuthenticated:state.isAuthenticated,
+        errorMessage:state.errorMessage
     }
 }
 const mapDispatchToProps = dispatch => {

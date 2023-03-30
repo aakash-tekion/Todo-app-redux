@@ -5,33 +5,26 @@ import { connect } from 'react-redux';
 import '../../Styles/Todo.css'
 import { Redirect } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar.js';
+import { chechIfTodoExist } from '../../helper/index.js';
 class Todo extends Component {
     constructor(props) {
         super(props)
         this.inputRef = React.createRef();
     }
-    chechIfPresent(todo){
-        let bool = false;
-        this.props.todos.forEach(item=>{
-            if(item.data === todo){
-                bool = true
-            }
-        })
-        return bool;
-    }
     completedHandler = (key) => {
-        this.props.removeTodo(key);
+        this.props.updateTodo(key);
     }
-    addTodo = (event) => {
-        event.preventDefault();
-        let todo = event.target.todo.value;
+    addTodoHandler = (todo) => {
         if(todo===''){
             return
         }
-        let notFound = this.chechIfPresent(todo)
+        let notFound = chechIfTodoExist(this.props.todos,todo)
         if(!notFound){
             this.props.addTodo(todo);
         }
+    }
+    removeTodoHandler = (key) =>{
+        this.props.removeTodo(key)
     }
     componentDidMount = () => {
         if(this.props.isAuthenticated){
@@ -45,8 +38,8 @@ class Todo extends Component {
         return (
             <div className='todo-container'>
                 <Navbar/>
-                <TodoForm inputRef = {this.inputRef} addTodo={this.addTodo} />
-                <TodoList completedHandler = {this.completedHandler} todos = {this.props.todos} />
+                <TodoForm inputRef = {this.inputRef} addTodo={this.addTodoHandler}  />
+                <TodoList completedHandler = {this.completedHandler} todos = {this.props.todos} removeTodo={this.removeTodoHandler} />
             </div>
 
         )
@@ -62,6 +55,7 @@ const mapDispatchToProps = dispatch => {
     return {
         addTodo : (todo) => dispatch({type:'add-todo',item:todo}),
         removeTodo : (key) => dispatch({type:'remove-todo',key}),
+        updateTodo: (key) => dispatch({type:'update-todo',key})
     }
 }
 

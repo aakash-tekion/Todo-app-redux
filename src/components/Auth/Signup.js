@@ -5,16 +5,27 @@ import '../../Styles/Auth.css'
 class Signup extends Component {
     constructor(props){
         super(props)
-        console.log(this.props)
+        this.state={
+            errorDisplay:false
+        }
         this.submitHandler = this.submitHandler.bind(this)
+        this.updateErrorMessage = this.updateErrorMessage.bind(this); 
     }
     submitHandler(event){
         event.preventDefault();
         let userObj = {
             'username':event.target.username.value,
-            'password':event.target.password.value
+            'password':event.target.password.value,
         }
         this.props.addUser(userObj)
+        this.setState({
+            errorDisplay:true
+        })
+    }
+    updateErrorMessage(){
+        this.setState({
+            errorDisplay:false
+        })
     }
     render() {
         if(this.props.isAuthenticated){
@@ -26,6 +37,7 @@ class Signup extends Component {
                 <input type='text' name='username' id='name' className='form-input' />
                 <label htmlFor='password' className='form-label'>Password</label>
                 <input type='password' name='password' id='password' className='form-input' />
+                <p className='error-message'>{this.state.errorDisplay?this.props.errorMessage:''}</p>
                 <button className='form-submit-button'>Sign up</button>
             </form>
         )
@@ -33,7 +45,8 @@ class Signup extends Component {
 }
 const mapStateToProps = state => {
     return{
-        isAuthenticated:state.isAuthenticated
+        isAuthenticated:state.isAuthenticated,
+        errorMessage:state.errorMessage
     }
 }
 

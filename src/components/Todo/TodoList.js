@@ -9,12 +9,8 @@ export default class TodoList extends Component {
             <ul className='todo-list'>
                 {
                     this.props.todos.map(todo => {
-                        if (todo.completed) {
-                            return <li className='todo-item flex-row completed' key={todo.id}><input type="checkbox" className='checkbox' value={todo.id} checked disabled />{todo.data}</li>
-                        }
-                        else {
-                            return <li className='todo-item flex-row' key={todo.id}><input type="checkbox" className='checkbox' onClick={() => { this.props.completedHandler(todo.id) }} value={todo.id} />{todo.data}</li>
-                        }
+                        let element = todo.completed ? <li className='todo-item flex-row' key={todo.id}><input type="checkbox" className='checkbox' value={todo.id} onClick={() => { this.props.completedHandler(todo.id) }} checked /><span className='todo-content completed'>{todo.data}</span><i className="fa-sharp fa-solid fa-delete-left delete-icon" onClick={()=>{this.props.removeTodo(todo.id)}}></i></li>:<li className='todo-item flex-row' key={todo.id}><input type="checkbox" className='checkbox' value={todo.id} onClick={() => { this.props.completedHandler(todo.id) }} /><span className='todo-content'>{todo.data}</span><i className="fa-sharp fa-solid fa-delete-left delete-icon" onClick={()=>{this.props.removeTodo(todo.id)}}></i></li>
+                        return element;
                     })
                 }
             </ul>

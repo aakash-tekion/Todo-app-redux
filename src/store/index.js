@@ -4,7 +4,8 @@ import { sortTodos } from '../helper/index.js'
 const initialState = {
     todos:[],
     username:'',
-    isAuthenticated:false
+    isAuthenticated:false,
+    errorMessage:''
 }
 const reducerfn = (state=initialState,action) =>{
     if(action.type==='add-todo'){
@@ -22,10 +23,10 @@ const reducerfn = (state=initialState,action) =>{
             
         }
     }
-    else if(action.type==='remove-todo'){
+    else if(action.type==='update-todo'){
         let updatedTodos = state.todos.map(item=>{
             if(item.id === action.key){
-                item.completed = 1
+                item.completed = item.completed === 1?0:1
             }
             return item
         })
@@ -38,38 +39,67 @@ const reducerfn = (state=initialState,action) =>{
             todos: updatedTodos
         }
     }
+    else if(action.type==='remove-todo'){
+        let updatedTodos = state.todos.filter(item=>{
+            return item.id!==action.key
+        })
+        updatedTodos = sortTodos(updatedTodos)
+        let userData = JSON.parse(localStorage.getItem(state.username))
+        userData.todos = updatedTodos
+        localStorage.setItem(state.username,JSON.stringify(userData))
+        return{
+            ...state,
+            todos: updatedTodos
+        }
+    }
     else if(action.type === 'add-user'){
         action.user['todos'] = []
-        localStorage.setItem(action.user.username,JSON.stringify(action.user))
-        return {
-            isAuthenticated:true,
-            username:action.user.username,
-            todos:[]
+        if(localStorage.getItem(action.user.username)){
+            return {
+                isAuthenticated:false,
+                username:'',
+                todos:[],
+                errorMessage:'User exist already'
+            }
         }
+        else{
+            localStorage.setItem(action.user.username,JSON.stringify(action.user))
+            return {
+                isAuthenticated:true,
+                username:action.user.username,
+                todos:[],
+                errorMessage:''
+            }
+
+        }
+        
     }
     else if(action.type === 'log-in'){
         let userData = JSON.parse(localStorage.getItem(action.user.username))
-        console.log(userData)
+        
         if(userData){
             if(userData.password !== action.user.password){ 
                 return {
                     isAuthenticated:false,
                     todos:[],
-                    username:''
+                    username:'',
+                    errorMessage:'Wrong password'
                 }
             }
             else{
                 return {
                     isAuthenticated:true,
                     todos:userData.todos,
-                    username:userData.username
+                    username:userData.username,
+                    errorMessage:''
                 }
             }
         }
         return{
             isAuthenticated:false,
             todos:[],
-            username:''
+            username:'',
+            errorMessage:'No user found'
         }
         
     }
@@ -77,7 +107,8 @@ const reducerfn = (state=initialState,action) =>{
         return {
             isAuthenticated:false,
             todos:[],
-            username:''
+            username:'',
+            errorMessage:''
         }
     }
     return state

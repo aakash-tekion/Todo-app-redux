@@ -3,6 +3,7 @@ import Todo from './components/Todo/Todo.js'
 import Login from './components/Auth/Login.js'
 import Signup from './components/Auth/Signup.js';
 import { Route, Switch, Redirect } from 'react-router-dom'
+import PageNotFound from './components/PageNotFound';
 export default function App() {
   return (
     <div className='App'>
@@ -18,6 +19,9 @@ export default function App() {
       </Route>
       <Route path='/todo'>
         <Todo />
+      </Route>
+      <Route path="*">
+        <PageNotFound/>
       </Route>
     </Switch>
     </div>

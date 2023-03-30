@@ -25,6 +25,13 @@
     font-size: 1.2rem;
     height:15%;
     border:none;
-    margin-top:20px;
+    margin-top:10px;
+    cursor:pointer;
+}
+.error-message{
+    color:rgb(202, 0, 0);
+    margin:0;
+}
+.signup-link,.form-submit-button{
     cursor:pointer;
 }
