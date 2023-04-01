@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { NavContext } from '../../context/NavContextProvider';
 import '../../Styles/Auth.css'
+import Navbar from '../Navbar/Navbar.js'
 class Signup extends Component {
+    static contextType = NavContext
     constructor(props){
         super(props)
         this.state={
@@ -27,19 +30,26 @@ class Signup extends Component {
             errorDisplay:false
         })
     }
+    componentDidMount(){
+        this.context.setPage('signup')
+    }
     render() {
         if(this.props.isAuthenticated){
             return <Redirect to='/todo'/>
         }
         return (
+            <div className='form-ui'>
+            <Navbar/>
             <form className='form-container' onSubmit={this.submitHandler}>
                 <label htmlFor='name' className='form-label'>Username</label>
                 <input type='text' name='username' id='name' className='form-input' />
                 <label htmlFor='password' className='form-label'>Password</label>
-                <input type='password' name='password' id='password' className='form-input' />
+                <input type='password' onClick={this.updateErrorMessage} name='password' id='password' className='form-input' />
                 <p className='error-message'>{this.state.errorDisplay?this.props.errorMessage:''}</p>
                 <button className='form-submit-button'>Sign up</button>
             </form>
+            </div>
+            
         )
     }
 }

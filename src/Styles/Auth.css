@@ -18,6 +18,14 @@
 .form-label{
     text-align: left;
 }
+.form-ui{
+    width:100%;
+    min-height:100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .form-submit-button{
     width:82%;
     background-color: brown;

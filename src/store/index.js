@@ -1,6 +1,6 @@
 import {legacy_createStore as createStore} from 'redux';
 import { nanoid } from 'nanoid';
-import { sortTodos } from '../helper/index.js'
+import { sortTodos,chechIfTodoExist } from '../helper/index.js'
 const initialState = {
     todos:[],
     username:'',
@@ -52,6 +52,29 @@ const reducerfn = (state=initialState,action) =>{
             todos: updatedTodos
         }
     }
+    else if(action.type ==='edit-todo'){
+        console.log("Exist",action)
+        let bool = chechIfTodoExist(state.todos,action.newContent,action.key)
+        console.log(bool)
+        if(!bool){
+            let updatedTodos = state.todos.map(item=>{
+                if(item.id === action.key){
+                    item.data = action.newContent
+                }
+                return item
+            })
+            updatedTodos = sortTodos(updatedTodos)
+            let userData = JSON.parse(localStorage.getItem(state.username))
+            userData.todos = updatedTodos
+            localStorage.setItem(state.username,JSON.stringify(userData))
+            return{
+                ...state,
+                todos: updatedTodos
+            }
+        }
+        return state
+        
+    }
     else if(action.type === 'add-user'){
         action.user['todos'] = []
         if(localStorage.getItem(action.user.username)){
@@ -59,7 +82,7 @@ const reducerfn = (state=initialState,action) =>{
                 isAuthenticated:false,
                 username:'',
                 todos:[],
-                errorMessage:'User exist already'
+                errorMessage:'User already exist'
             }
         }
         else{

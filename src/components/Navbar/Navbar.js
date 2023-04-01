@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../../Styles/Navbar.css'
+import { NavLink } from 'react-router-dom'
+import { NavContext } from '../../context/NavContextProvider'
 class Navbar extends Component {
+  static contextType = NavContext
   render() {
     return (
       <nav className='navbar'>
@@ -9,8 +12,28 @@ class Navbar extends Component {
             <p className='nav-header'>My Todo App</p>
         </div>
         <div className='nav-right'>
-            <p>{this.props.username}</p>
-            <a className='logout-btn' onClick={this.props.logout}>log out</a>
+          {
+            
+            this.props.isAuthenticated?<><p>{this.props.username}</p>
+            <a className='logout-btn' onClick={this.props.logout}>log out</a></>
+            :
+            <>
+            {
+              this.context.page === 'signup' ? 
+              <>
+              <NavLink className='navlink' to='/login'>Log in</NavLink>
+              <NavLink className='navlink active' to='/signup'>Sign up</NavLink>
+              </>
+              :
+              <>
+              <NavLink className='navlink active' to='/login'>Log in</NavLink>
+              <NavLink className='navlink' to='/signup'>Sign up</NavLink>
+              </>
+            }
+            
+            
+            </>
+          }
         </div>
       </nav>
     )
@@ -18,7 +41,8 @@ class Navbar extends Component {
 }
 const mapStateToProps = state => {
     return {
-        username:state.username
+        username:state.username,
+        isAuthenticated:state.isAuthenticated
     }
 }
 const mapDispatchToProps = (dispatch) => {
