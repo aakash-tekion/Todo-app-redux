@@ -6,16 +6,13 @@ import '../../Styles/Todo.css'
 import { Redirect } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar.js';
 import { chechIfTodoExist } from '../../helper/index.js';
+import { EditContext } from '../../context/EditContextProvider.js';
 class Todo extends Component {
+    static contextType = EditContext
     constructor(props) {
         super(props)
         this.inputRef = React.createRef();
         this.todoButton = React.createRef();
-        this.editTodoFormHandler = this.editTodoFormHandler.bind(this);
-        this.editTodoHandler = this.editTodoHandler.bind(this);
-        this.state = {
-            editKey:''
-        }
     }
     completedHandler = (key) => {
         this.props.updateTodo(key);
@@ -38,16 +35,14 @@ class Todo extends Component {
         }
     }
     editTodoHandler = (todo) => {
-        this.inputRef.current.value=todo.data
+        this.inputRef.current.value = todo.data
         this.todoButton.current.className = 'fa-solid fa-pen'
-        this.setState({
-            editKey:todo.id
-        })
-    }
-    editTodoFormHandler(newContent){
-        this.props.editTodo(this.state.editKey,newContent)
+      }
+    editTodoFormHandler = (newContent) => {
+        this.props.editTodo(this.context.editKey, newContent)
         this.todoButton.current.className = 'fa-solid fa-plus'
     }
+   
     render() {
         if(!this.props.isAuthenticated){
             return <Redirect to='/login'/>
@@ -74,8 +69,8 @@ const mapDispatchToProps = dispatch => {
     return {
         addTodo : (todo) => dispatch({type:'add-todo',item:todo}),
         removeTodo : (key) => dispatch({type:'remove-todo',key}),
-        updateTodo: (key) => dispatch({type:'update-todo',key}),
-        editTodo: (key,newContent) => dispatch({type:'edit-todo',key,newContent})
+        updateTodo : (key) => dispatch({type:'update-todo',key}),
+        editTodo : (key,newContent) => dispatch({type:'edit-todo',key,newContent})
     }
 }
 

@@ -53,10 +53,9 @@ const reducerfn = (state=initialState,action) =>{
         }
     }
     else if(action.type ==='edit-todo'){
-        console.log("Exist",action)
         let bool = chechIfTodoExist(state.todos,action.newContent,action.key)
-        console.log(bool)
         if(!bool){
+            // conso
             let updatedTodos = state.todos.map(item=>{
                 if(item.id === action.key){
                     item.data = action.newContent

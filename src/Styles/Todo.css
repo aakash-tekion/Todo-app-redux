@@ -82,14 +82,26 @@
     color:#7b7a7a;
     cursor:pointer;
     justify-content: flex-end;
-    padding-right: 10px;
     
 }
-.todo-icon-pop{
+.dot-icon{
+    width:30%;
+    text-align:end;
+    padding-right: 15%;
+} 
 
+.todo-icon-pop{
     justify-content: space-evenly;
-    padding-right: 0%;
+    padding-left: 0%;
     border:1px solid #7b7a7a;
     height:1.7rem;
     border-radius:0.5rem;
+}
+.no-todos{
+    font-size :8rem;
+    text-shadow: 4px 4px 10px #7b7a7a;
+    color:#fff;
+    font-family: 'Alkatra', cursive;
+    margin:0;
+
 }
