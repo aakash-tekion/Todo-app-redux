@@ -42,7 +42,7 @@ class Signup extends Component {
             <Navbar/>
             <form className='form-container' onSubmit={this.submitHandler}>
                 <label htmlFor='name' className='form-label'>Username</label>
-                <input type='text' name='username' id='name' className='form-input' />
+                <input type='text' onClick={this.updateErrorMessage} name='username' id='name' className='form-input' />
                 <label htmlFor='password' className='form-label'>Password</label>
                 <input type='password' onClick={this.updateErrorMessage} name='password' id='password' className='form-input' />
                 <p className='error-message'>{this.state.errorDisplay?this.props.errorMessage:''}</p>
