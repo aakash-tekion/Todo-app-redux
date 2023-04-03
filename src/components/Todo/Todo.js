@@ -15,7 +15,7 @@ class Todo extends Component {
         this.todoButton = React.createRef();
     }
     completedHandler = (key) => {
-        this.props.updateTodo(key);
+        this.props.updateTodo(key,this.props.username);
     }
     addTodoHandler = (todo) => {
         if(todo===''){
@@ -23,11 +23,11 @@ class Todo extends Component {
         }
         let notFound = chechIfTodoExist(this.props.todos,todo)
         if(!notFound){
-            this.props.addTodo(todo);
+            this.props.addTodo(todo,this.props.username);
         }
     }
     removeTodoHandler = (key) =>{
-        this.props.removeTodo(key)
+        this.props.removeTodo(key,this.props.username)
     }
     componentDidMount = () => {
         if(this.props.isAuthenticated){
@@ -39,11 +39,12 @@ class Todo extends Component {
         this.todoButton.current.className = 'fa-solid fa-pen'
       }
     editTodoFormHandler = (newContent) => {
-        this.props.editTodo(this.context.editKey, newContent)
+        this.props.editTodo(this.context.editKey, newContent,this.props.username)
         this.todoButton.current.className = 'fa-solid fa-plus'
     }
    
     render() {
+        console.log(this.props)
         if(!this.props.isAuthenticated){
             return <Redirect to='/login'/>
         }
@@ -61,16 +62,17 @@ class Todo extends Component {
 }
 const mapStateToProps = state => {
     return {
-        todos:state.todos,
-        isAuthenticated:state.isAuthenticated
+        todos:state.TodoReducer.todos,
+        isAuthenticated:state.AuthReducer.isAuthenticated,
+        username:state.AuthReducer.username
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        addTodo : (todo) => dispatch({type:'add-todo',item:todo}),
-        removeTodo : (key) => dispatch({type:'remove-todo',key}),
-        updateTodo : (key) => dispatch({type:'update-todo',key}),
-        editTodo : (key,newContent) => dispatch({type:'edit-todo',key,newContent})
+        addTodo : (todo,username) => dispatch({type:'ADD_TODO',item:todo,username}),
+        removeTodo : (key,username) => dispatch({type:'REMOVE_TODO',key,username}),
+        updateTodo : (key,username) => dispatch({type:'UPDATE_TODO',key,username}),
+        editTodo : (key,newContent,username) => dispatch({type:'EDIT_TODO',key,newContent,username})
     }
 }
 

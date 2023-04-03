@@ -41,13 +41,13 @@ class Navbar extends Component {
 }
 const mapStateToProps = state => {
     return {
-        username:state.username,
-        isAuthenticated:state.isAuthenticated
+        username:state.AuthReducer.username,
+        isAuthenticated:state.AuthReducer.isAuthenticated
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return{
-        logout:()=>{dispatch({type:'log-out'})}
+        logout:()=>{dispatch({type:'LOG_OUT'})}
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Navbar)

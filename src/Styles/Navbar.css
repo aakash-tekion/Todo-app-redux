@@ -14,7 +14,7 @@
     font-size: 2rem;
 }
 .nav-left{
-    width:30%;
+    width:20%;
     text-align:center
 }
 .nav-right, .navbar,.logout-btn,.navlink{
@@ -26,6 +26,7 @@
     width:20%;
     justify-content: space-evenly;
     height:100%;
+    margin-right:5%;
 }
 .logout-btn{
     border:1px solid #fff;

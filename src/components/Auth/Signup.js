@@ -35,6 +35,7 @@ class Signup extends Component {
     }
     render() {
         if(this.props.isAuthenticated){
+            this.props.readTodo(this.props.username)
             return <Redirect to='/todo'/>
         }
         return (
@@ -55,14 +56,16 @@ class Signup extends Component {
 }
 const mapStateToProps = state => {
     return{
-        isAuthenticated:state.isAuthenticated,
-        errorMessage:state.errorMessage
+        isAuthenticated:state.AuthReducer.isAuthenticated,
+        errorMessage:state.AuthReducer.errorMessage,
+        username:state.AuthReducer.username
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addUser : (userObj) => {dispatch({type:'add-user',user:userObj})}
+        addUser : (userObj) => {dispatch({type:'ADD_USER',user:userObj})},
+        readTodo: (username) => {dispatch({type:'READ_TODO',username})}
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Signup)

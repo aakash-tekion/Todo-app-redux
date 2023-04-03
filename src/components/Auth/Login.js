@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import '../../Styles/Auth.css'
 import Navbar from '../Navbar/Navbar.js'
 import { NavContext } from '../../context/NavContextProvider';
+import bcrypt from 'bcryptjs'
 class Login extends Component {
     static contextType = NavContext;
     constructor(props){
@@ -20,7 +21,23 @@ class Login extends Component {
             'username':event.target.username.value,
             'password':event.target.password.value
         }
-        this.props.login(userObj);
+        if(localStorage.getItem(userObj.username)){
+            bcrypt.compare(userObj.password,JSON.parse(localStorage.getItem(userObj.username))['password'],(err,isMatch)=>{
+                if(err){
+                    this.props.logInFailure('Error')
+                }
+                else if(!isMatch){
+                    this.props.logInFailure('Wrong password')
+                }
+                else{
+                    this.props.logInSuccess(userObj)
+                }
+            })
+        }
+        else{
+            this.props.logInFailure('User not found')
+        }
+        
         this.setState({
             errorDisplay:true
         })
@@ -35,7 +52,9 @@ class Login extends Component {
     }
     
     render() {
+        console.log(this.props)
         if(this.props.isAuthenticated){
+            this.props.readTodo(this.props.userName)
             return <Redirect to='/todo' />
         }
         return (
@@ -56,13 +75,16 @@ class Login extends Component {
 }
 const mapStateToProps = state => {
     return{
-        isAuthenticated:state.isAuthenticated,
-        errorMessage:state.errorMessage
+        isAuthenticated:state.AuthReducer.isAuthenticated,
+        userName:state.AuthReducer.username,
+        errorMessage:state.AuthReducer.errorMessage
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        login : (userObj) => {dispatch({type:'log-in',user:userObj})}
+        logInSuccess : (userObj) => {dispatch({type:'LOG_IN_SUCCESS',user:userObj})},
+        logInFailure:(errorMessage)=>{dispatch({type:'LOG_IN_FAILURE',errorMessage})},
+        readTodo:(username)=>{dispatch({type:'READ_TODO',username})}
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Login)

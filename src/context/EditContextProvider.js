@@ -10,7 +10,7 @@ export class EditContextProvider extends Component {
     this.EditKey = this.EditKey.bind(this)
   }
   EditKey(key){
-    console.log(key)
+    
     this.setState({
       editKey:key
     })
