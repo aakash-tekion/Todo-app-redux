@@ -1,0 +1,47 @@
+.navbar{
+    width:100%;
+    height:50px;
+    color:#fff;
+    background-color: brown;
+    justify-content: space-between;
+    font-weight: 700;
+    position: absolute;
+    top:0;
+}
+
+.navbar-header{
+    width:100%;
+    font-size: 2rem;
+}
+.nav-left{
+    width:20%;
+    text-align:center
+}
+.nav-right, .navbar,.logout-btn,.navlink{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+.nav-right{
+    width:20%;
+    justify-content: space-evenly;
+    height:100%;
+    margin-right:5%;
+}
+.logout-btn{
+    border:1px solid #fff;
+    height:80%;
+    width: 50%;
+    justify-content: center;
+    cursor:pointer;
+}
+.navlink{
+    color: #fff;
+    text-decoration: none;
+    height:70%;
+
+}
+
+.active{
+    border-bottom: 1px solid #fff;
+}
